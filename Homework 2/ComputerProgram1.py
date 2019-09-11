@@ -5,12 +5,17 @@
 
 import math
 import matplotlib.pyplot as pyplot
-import matplotlib.lines as mlines
 import numpy as np
 
-# Store the rows of the fixed point iterations
-rows = []
 
+class Table:
+    def __init__(self, xvals, yvals):
+        super().__init__()
+        self.x_vals = xvals
+        self.y_vals = yvals
+
+
+tables = []
 # Math expression to evaluate.
 f1 = lambda x: x - (x**3) - 4*(x**2) + 10
 f2 = lambda x: ((10/x) - (4*x))**(1/2)
@@ -22,14 +27,14 @@ f5 = lambda x: x - ((x**3 + 4*x**2 - 10)/(3*x**2 + 8*x))
 fp = lambda x: x
 
 
-def graph(formula, formula2, x_values, y_values, x_range):
+def graph(formula, formula2, rows_x, rows_y, x_range):
     """Graph the formula and the lines of convergence with y=x."""
     x = np.linspace(1, x_range, 100)
     y = formula(x)
     y2 = formula2(x)
     pyplot.plot(x, y)
     pyplot.plot(x, y2)   
-    pyplot.plot(x_values, y_values)
+    pyplot.plot(rows_x, rows_y)
     pyplot.grid()
     pyplot.show()
 
@@ -50,42 +55,53 @@ def divergence(values):
 
 def fixed_point(func, p0=1, n=30, tol=1e-9):
     """Method for obtaining the fixed-point"""
-    x_values = []
-    y_values = []
     divcheck = []
+    rows_x = []
+    rows_y = []
     itr = 1
     max_x = p0
     while(itr <= n):
         p = func(p0)
-        x_values.append(p0)
-        y_values.append(p)
-        x_values.append(p)
-        y_values.append(fp(p))
+        if (type(p0) is complex or type(p) is complex):
+            rows_x.append("Diverging")
+            rows_y.append("Diverging")
+        else:
+            rows_x.append(p0)
+            rows_y.append(p)
+        # rows_x.append(p)
+        # rows_y.append(fp(p))
         divcheck.append(p)
         if (p.real > max_x.real):
             max_x = p 
         if (itr % 5 == 0 and divergence(divcheck)):
-            print("The formula is diverging.")
+            for i in range(itr-1, n):
+                rows_x.append("Diverging")
+                rows_y.append("Diverging")
+            tables.append(Table(rows_x, rows_y))
             break
-        if (abs(p-p0) < tol):
+        if (itr == n):
             print("P = ", p)
             print("n = ", itr)
-            graph(func, fp, x_values, y_values, math.ceil(max_x))
+            # graph(func, fp, rows_x, rows_y, math.ceil(max_x))
+            tables.append(Table(rows_x, rows_y))
             break
         else:
             itr = itr + 1
             p0 = p
-        if (itr == n):
-            print("P = ", p)
-            print("n = ", itr)
-            graph(func, fp, x_values, y_values, math.ceil(max_x.real))
+            # graph(func, fp, rows_x, rows_y, math.ceil(max_x.real))
     
 
-fixed_point(f1) # Function 1 is divergent. While n goes to infinity, so too does f1.
-fixed_point(f2)
-fixed_point(f3)
-fixed_point(f4)
-fixed_point(f5)
+cases_dict = {'A': f1, 'B': f2, 'C': f3, 'D': f4, 'E': f5}
 
-#with open('table.txt', 'w') as table:
+
+for c,v in cases_dict.items():
+    fixed_point(v)
+print(f'{"Iteration":<15}|{"A":^25}|{"B":^25}|{"C":^27}|{"D":^27}|{"E":^26}|')
+print('{:_<150}'.format(''))
+for i in range(1, 31):
+    print(f'N = {str(i)[:10]:<10} | {str(tables[0].x_vals[i-1])[:10]:<10} | {str(tables[0].y_vals[i-1])[:10]:<10} | {str(tables[1].x_vals[i-1])[:10]:<10} | {str(tables[1].y_vals[i-1])[:10]:<10} | {tables[2].x_vals[i-1]:<2.9f} | {tables[2].y_vals[i-1]:2.9f} | {tables[3].x_vals[i-1]:<2.9f} | {tables[3].y_vals[i-1]:2.9f} | {tables[4].x_vals[i-1]:<2.9f} | {tables[4].y_vals[i-1]:2.9f}')
+print("\nCase 'E': Converged most quickly where N=5 is the first to show repetition.")
+
+
+# with open('table.txt', 'w') as table:
     
