@@ -36,7 +36,7 @@ def iterate(A, N, func, tol=1e-6, maxiter=None):
     display(iter_val, e, i, tol, A, N)
 
 
-iterate(3, 4, root)
+iterate(-2, 3, root)
 
 ''' ---- Output ----
 Process took 207 iterations and resulted in an error less than 9.759841501644217e-07.
