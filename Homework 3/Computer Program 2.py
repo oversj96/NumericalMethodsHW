@@ -3,8 +3,17 @@
 # Purpose: Use Newton's Method to find A^(1/N).
 # Date: 9-12-2019
 
+
 def root(p, A, N):
-    return p - ((p**N - A)/(N*p))
+    return p - ((p**N - A)/((N*p)**(N-1)))
+
+
+def display(iterations, error, interval, tol):
+    print(f"Process took {interval} iterations and resulted in an error less than {error}.")
+    print(f"Desired tolerance was: {tol}")
+    for x in range(0, len(iterations)):
+        print(f"N = {x} : {str(iterations[x]):<9}")
+
 
 def iterate(A, N, func, tol=1e-6, maxiter=None):
     p0 = A
@@ -23,9 +32,8 @@ def iterate(A, N, func, tol=1e-6, maxiter=None):
         i += 1
         if maxiter is not None and i >= maxiter:
             break
-    return iter_val
+    display(iter_val, e, i, tol)
 
 
-print(iterate(2, 4, root))
-print()
+iterate(3, 4, root)
 
