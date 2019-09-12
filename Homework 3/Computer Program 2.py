@@ -40,8 +40,8 @@ iterate(3, 4, root)
 
 ''' ---- Output ----
 Process took 207 iterations and resulted in an error less than 9.759841501644217e-07.
-Desired tolerance was: 1e-06
-Final result for 3^1/4 was: 1.3160886529926796
+Desired error was to be less than 1e-06
+Final result for 3^(1/4) was: 1.3160886529926796
 N = 0 : 3        
 N = 1 : 2.954861111111111
 N = 2 : 2.9105083022289358
