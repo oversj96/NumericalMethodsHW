@@ -10,7 +10,7 @@ def root(p, A, N):
 
 def display(iterations, error, interval, tol, A, N):
     print(f"Process took {interval} iterations and resulted in an error less than {error}.")
-    print(f"Desired tolerance was: {tol}")
+    print(f"Desired tolerance was: less than {tol}")
     print(f"Final result for {A}^(1/{N}) was: {iterations[len(iterations)-1]}")
     for x in range(0, len(iterations)):
         print(f"N = {x} : {str(iterations[x]):<9}")
