@@ -3,9 +3,12 @@
 # Purpose: Use Newton's Method to find A^(1/N).
 # Date: 9-12-2019
 
+from decimal import Decimal, localcontext
 
 def root(p, A, N):
-    return p - ((p**N - A)/(N*p**(N-1)))
+    with localcontext() as ctx:
+        ctx.prec = 15
+    return Decimal(p - ((p**N - A)/(N*(p**(N-1)))))
 
 
 def display(iterations, error, interval, tol, A, N):
@@ -39,15 +42,15 @@ def iterate(A, N, func, tol=1e-6, maxiter=None):
 iterate(3, 4, root)
 
 ''' ---- Output ----
-Process took 7 iterations and resulted in an error less than 2.662514442253183e-07.
+Process took 7 iterations and resulted in an error less than 2.66251444258960663488E-7.
 Desired error was to be less than 1e-06
-Final result for 3^(1/4) was: 1.3160740129525732
+Final result for 3^(1/4) was: 1.316074012952573257776678380
 N = 0 : 3
-N = 1 : 2.2777777777777777
-N = 2 : 1.7717972993233797
-N = 3 : 1.463688102853308
-N = 4 : 1.336940995805593
-N = 5 : 1.3165574873704087
-N = 6 : 1.3160742792040174
-N = 7 : 1.3160740129525732
+N = 1 : 2.27777777777777767909128669998608529567718505859375
+N = 2 : 1.771797299323379842631545801
+N = 3 : 1.463688102853308038546832192
+N = 4 : 1.336940995805592906820364644
+N = 5 : 1.316557487370408682662047260
+N = 6 : 1.316074279204017516737341868
+N = 7 : 1.316074012952573257776678380
 '''
